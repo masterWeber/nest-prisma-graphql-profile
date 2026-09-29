@@ -1,11 +1,13 @@
 FROM node:22-alpine AS builder
 
 WORKDIR /app
+ENV DATABASE_URL=postgresql://postgres:postgres@localhost:5432/profile?schema=public
 
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
+RUN npx prisma generate
 RUN npm run build
 
 FROM node:22-alpine AS production
@@ -16,8 +18,12 @@ ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci --omit=dev
 
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+COPY prisma ./prisma
+COPY prisma.config.ts ./prisma.config.ts
 COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
