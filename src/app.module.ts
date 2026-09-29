@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { createObserveModule } from '@nestjs/observe';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
 import { PrismaModule } from './infrastructure/prisma/prisma.module.js';
 import { ProfileModule } from './modules/profile/profile.module.js';
 
@@ -15,6 +14,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     PrismaModule,
     ProfileModule,
@@ -27,7 +27,5 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       serviceId: 'nest-typescript-starter',
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -44,8 +44,9 @@ $ docker compose up --build
 $ docker compose down
 ```
 
-The application is available at `http://localhost:3000`, and PostgreSQL is
-available on host port `5433`.
+The application is available at `http://localhost:${APP_PORT}`, Apollo Sandbox
+is available at `http://localhost:${APP_PORT}/graphql`, and PostgreSQL is
+available on host port `${POSTGRES_PORT}`.
 
 ## Compile and run the project
 
