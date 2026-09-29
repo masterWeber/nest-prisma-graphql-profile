@@ -6,11 +6,11 @@ import { ProfileRepository } from '../domain/profile.repository.js';
 export class ProfileUseCases {
   constructor(private readonly profiles: ProfileRepository) {}
 
-  async findById(id: string): Promise<Profile> {
-    const profile = await this.profiles.findById(id);
+  async find(): Promise<Profile> {
+    const profile = await this.profiles.find();
 
     if (!profile) {
-      throw new NotFoundException(`Profile ${id} was not found`);
+      throw new NotFoundException('Profile was not found');
     }
 
     return profile;

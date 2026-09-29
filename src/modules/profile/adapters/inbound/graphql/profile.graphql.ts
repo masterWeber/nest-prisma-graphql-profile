@@ -1,6 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
+export class SkillModel {
+  @Field()
+  name!: string;
+}
+
+@ObjectType()
 export class ProfileModel {
   @Field()
   name!: string;
@@ -10,4 +16,7 @@ export class ProfileModel {
 
   @Field(() => [String])
   links!: string[];
+
+  @Field(() => [SkillModel])
+  skills!: SkillModel[];
 }

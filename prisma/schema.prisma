@@ -11,6 +11,14 @@ model Profile {
   name        String
   description String
   links       String[]
+  skills      Skill[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id        String  @id @default(uuid())
+  name      String
+  profileId String
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
