@@ -31,6 +31,22 @@
 $ npm install
 ```
 
+## Run with Docker
+
+```bash
+# create local environment configuration
+$ cp .env.example .env
+
+# build and start the application with PostgreSQL
+$ docker compose up --build
+
+# stop containers
+$ docker compose down
+```
+
+The application is available at `http://localhost:3000`, and PostgreSQL is
+available on host port `5433`.
+
 ## Compile and run the project
 
 ```bash
