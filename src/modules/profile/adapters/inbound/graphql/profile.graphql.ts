@@ -25,6 +25,15 @@ export class ExperienceModel {
 }
 
 @ObjectType()
+export class ProjectModel {
+  @Field()
+  name!: string;
+
+  @Field()
+  url!: string;
+}
+
+@ObjectType()
 export class ProfileModel {
   @Field()
   name!: string;
@@ -40,4 +49,7 @@ export class ProfileModel {
 
   @Field(() => [ExperienceModel])
   experience!: ExperienceModel[];
+
+  @Field(() => [ProjectModel])
+  projects!: ProjectModel[];
 }

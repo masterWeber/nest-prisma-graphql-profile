@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   Experience as PrismaExperience,
   Profile as PrismaProfile,
+  Project as PrismaProject,
   Skill as PrismaSkill,
 } from '@prisma/client';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service.js';
@@ -9,6 +10,7 @@ import { Profile } from '../../domain/profile.entity.js';
 import { ProfileRepository } from '../../domain/profile.repository.js';
 import { Skill } from '../../domain/skill.entity.js';
 import { Experience } from '../../domain/experience.entity.js';
+import { Project } from '../../domain/project.entity.js';
 
 @Injectable()
 export class PrismaProfileRepository implements ProfileRepository {
@@ -16,7 +18,7 @@ export class PrismaProfileRepository implements ProfileRepository {
 
   async find(): Promise<Profile | null> {
     const profile = await this.prisma.profile.findFirst({
-      include: { skills: true, experience: true },
+      include: { skills: true, experience: true, projects: true },
     });
     return profile ? this.toDomain(profile) : null;
   }
@@ -25,6 +27,7 @@ export class PrismaProfileRepository implements ProfileRepository {
     profile: PrismaProfile & {
       skills: PrismaSkill[];
       experience: PrismaExperience[];
+      projects: PrismaProject[];
     },
   ): Profile {
     return new Profile(
@@ -43,6 +46,9 @@ export class PrismaProfileRepository implements ProfileRepository {
             item.endDate,
             item.achievements,
           ),
+      ),
+      profile.projects.map(
+        (project) => new Project(project.id, project.name, project.url),
       ),
       profile.createdAt,
       profile.updatedAt,
