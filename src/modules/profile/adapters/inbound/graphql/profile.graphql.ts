@@ -1,9 +1,27 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class SkillModel {
   @Field()
   name!: string;
+}
+
+@ObjectType()
+export class ExperienceModel {
+  @Field()
+  company!: string;
+
+  @Field()
+  position!: string;
+
+  @Field(() => GraphQLISODateTime)
+  startDate!: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  endDate!: Date | null;
+
+  @Field(() => [String])
+  achievements!: string[];
 }
 
 @ObjectType()
@@ -19,4 +37,7 @@ export class ProfileModel {
 
   @Field(() => [SkillModel])
   skills!: SkillModel[];
+
+  @Field(() => [ExperienceModel])
+  experience!: ExperienceModel[];
 }
