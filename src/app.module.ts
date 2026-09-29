@@ -15,7 +15,10 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       autoSchemaFile: true,
       sortSchema: true,
       introspection: true,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      plugins:
+        process.env.NODE_ENV === 'production'
+          ? [ApolloServerPluginLandingPageLocalDefault()]
+          : [],
     }),
     PrismaModule,
     ProfileModule,
@@ -24,7 +27,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     ObserveModule.forRoot({
       appKey: process.env.OBSERVE_APP_KEY ?? '',
       appSecret: process.env.OBSERVE_APP_SECRET ?? '',
-      runtimeMetrics: !Boolean(process.versions?.['webcontainer']),
+      runtimeMetrics: !process.versions?.['webcontainer'],
       serviceId: 'nest-typescript-starter',
     }),
   ],
